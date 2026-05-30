@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Document,
   Page,
@@ -7,302 +8,309 @@ import {
   PDFDownloadLink,
 } from '@react-pdf/renderer';
 
-import { useState } from 'react';
-
 const styles = StyleSheet.create({
   page: {
-    padding: 40,
-    fontSize: 12,
+    padding: 35,
+    fontSize: 11,
     fontFamily: 'Helvetica',
     backgroundColor: '#ffffff',
     color: '#111827',
   },
 
+  cover: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    textAlign: 'center',
+  },
+
   title: {
     fontSize: 28,
-    marginBottom: 20,
+    marginBottom: 10,
     fontWeight: 'bold',
     color: '#0f172a',
   },
 
-  heading: {
-    fontSize: 18,
-    marginTop: 20,
-    marginBottom: 10,
-    fontWeight: 'bold',
-    color: '#0891b2',
+  subtitle: {
+    fontSize: 16,
+    marginBottom: 30,
+    color: '#334155',
   },
 
   section: {
-    marginBottom: 12,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    marginBottom: 20,
   },
 
-  label: {
+  heading: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: '#0369a1',
+    fontWeight: 'bold',
+    borderBottom: '1 solid #0ea5e9',
+    paddingBottom: 4,
+  },
+
+  text: {
+    lineHeight: 1.7,
+    marginBottom: 8,
+  },
+
+  table: {
+    width: '100%',
+    border: '1 solid #cbd5e1',
+    marginTop: 10,
+  },
+
+  row: {
+    flexDirection: 'row',
+  },
+
+  cellHeader: {
+    width: '50%',
+    backgroundColor: '#0f172a',
+    color: '#fff',
+    padding: 8,
+    borderRight: '1 solid #fff',
     fontWeight: 'bold',
   },
 
-  paragraph: {
-    lineHeight: 1.7,
-    marginTop: 5,
-  },
-
-  box: {
-    marginTop: 10,
-    padding: 12,
-    borderRadius: 8,
-    backgroundColor: '#f3f4f6',
-  },
-
-  footer: {
-    marginTop: 40,
-    fontSize: 10,
-    color: '#6b7280',
-    textAlign: 'center',
+  cell: {
+    width: '50%',
+    padding: 8,
+    borderRight: '1 solid #cbd5e1',
+    borderTop: '1 solid #cbd5e1',
   },
 });
 
 const DPRDocument = ({
   businessName,
   ownerName,
-  projectCost,
+  location,
   loanAmount,
-  details,
+  projectCost,
+  businessType,
 }: any) => (
   <Document>
+    {/* COVER PAGE */}
     <Page size="A4" style={styles.page}>
+      <View style={styles.cover}>
+        <Text style={styles.title}>{businessName}</Text>
 
-      {/* Cover */}
-      <Text style={styles.title}>
-        Detailed Project Report
-      </Text>
+        <Text style={styles.subtitle}>
+          Detailed Project Report (DPR)
+        </Text>
 
+        <Text style={styles.text}>
+          Prepared For Bank / NBFC / PMEGP / Mudra Loan
+        </Text>
+
+        <Text style={styles.text}>
+          Prepared By Business Partner AI
+        </Text>
+
+        <Text style={styles.text}>
+          Founder: Akash Agnihotri
+        </Text>
+      </View>
+    </Page>
+
+    {/* EXECUTIVE SUMMARY */}
+    <Page size="A4" style={styles.page}>
       <View style={styles.section}>
-        <Text>
-          <Text style={styles.label}>Business Name: </Text>
-          {businessName}
+        <Text style={styles.heading}>Executive Summary</Text>
+
+        <Text style={styles.text}>
+          {businessName} is a modern {businessType} business located in{' '}
+          {location}. The business aims to establish a scalable and
+          profitable operation with strong market demand and future
+          growth opportunities.
         </Text>
 
-        <Text>
-          <Text style={styles.label}>Owner Name: </Text>
-          {ownerName}
-        </Text>
-
-        <Text>
-          <Text style={styles.label}>Project Cost: </Text>
-          ₹ {projectCost}
-        </Text>
-
-        <Text>
-          <Text style={styles.label}>Loan Amount: </Text>
-          ₹ {loanAmount}
+        <Text style={styles.text}>
+          This project report has been prepared for financial assistance,
+          business planning, and investment evaluation purposes.
         </Text>
       </View>
 
-      {/* Executive Summary */}
-      <Text style={styles.heading}>
-        Executive Summary
-      </Text>
+      {/* PROJECT DETAILS */}
+      <View style={styles.section}>
+        <Text style={styles.heading}>Project Details</Text>
 
-      <Text style={styles.paragraph}>
-        This Detailed Project Report has been prepared for
-        establishing and scaling the business venture with
-        financial sustainability, operational growth and
-        long-term profitability.
-      </Text>
+        <View style={styles.table}>
+          <View style={styles.row}>
+            <Text style={styles.cellHeader}>Particular</Text>
+            <Text style={styles.cellHeader}>Details</Text>
+          </View>
 
-      {/* Business Overview */}
-      <Text style={styles.heading}>
-        Business Overview
-      </Text>
+          <View style={styles.row}>
+            <Text style={styles.cell}>Business Name</Text>
+            <Text style={styles.cell}>{businessName}</Text>
+          </View>
 
-      <View style={styles.box}>
-        <Text style={styles.paragraph}>
-          {details}
+          <View style={styles.row}>
+            <Text style={styles.cell}>Owner Name</Text>
+            <Text style={styles.cell}>{ownerName}</Text>
+          </View>
+
+          <View style={styles.row}>
+            <Text style={styles.cell}>Business Type</Text>
+            <Text style={styles.cell}>{businessType}</Text>
+          </View>
+
+          <View style={styles.row}>
+            <Text style={styles.cell}>Location</Text>
+            <Text style={styles.cell}>{location}</Text>
+          </View>
+
+          <View style={styles.row}>
+            <Text style={styles.cell}>Project Cost</Text>
+            <Text style={styles.cell}>₹ {projectCost}</Text>
+          </View>
+
+          <View style={styles.row}>
+            <Text style={styles.cell}>Loan Requirement</Text>
+            <Text style={styles.cell}>₹ {loanAmount}</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* MARKET ANALYSIS */}
+      <View style={styles.section}>
+        <Text style={styles.heading}>Market Analysis</Text>
+
+        <Text style={styles.text}>
+          The market demand for {businessType} businesses is increasing
+          rapidly due to changing consumer behavior, urban growth, and
+          rising digital awareness.
+        </Text>
+
+        <Text style={styles.text}>
+          The project has strong growth potential and is expected to
+          generate stable revenue with good profitability margins.
         </Text>
       </View>
 
-      {/* Market Analysis */}
-      <Text style={styles.heading}>
-        Market Analysis
-      </Text>
+      {/* FINANCIAL ANALYSIS */}
+      <View style={styles.section}>
+        <Text style={styles.heading}>Financial Analysis</Text>
 
-      <Text style={styles.paragraph}>
-        The current market demonstrates significant demand
-        growth, scalable customer acquisition opportunities
-        and increasing industry adoption.
-      </Text>
+        <Text style={styles.text}>
+          Estimated project cost is ₹ {projectCost}. The promoter is
+          seeking financial assistance of ₹ {loanAmount}.
+        </Text>
 
-      {/* Financial Analysis */}
-      <Text style={styles.heading}>
-        Financial Projections
-      </Text>
+        <Text style={styles.text}>
+          The business is projected to achieve operational break-even
+          within the first 18–24 months.
+        </Text>
 
-      <View style={styles.box}>
-        <Text>• Estimated ROI: 28%</Text>
-        <Text>• Break-even Period: 18 Months</Text>
-        <Text>• Gross Margin: 42%</Text>
-        <Text>• Expected Revenue Growth: 35% Yearly</Text>
+        <Text style={styles.text}>
+          Revenue growth is expected to increase annually due to market
+          expansion and customer acquisition.
+        </Text>
       </View>
 
-      {/* Loan Analysis */}
-      <Text style={styles.heading}>
-        Loan & Repayment Analysis
-      </Text>
+      {/* CONCLUSION */}
+      <View style={styles.section}>
+        <Text style={styles.heading}>Conclusion</Text>
 
-      <Text style={styles.paragraph}>
-        Based on the proposed business model and projected
-        revenues, the project demonstrates strong repayment
-        capacity and financial feasibility.
-      </Text>
-
-      {/* Conclusion */}
-      <Text style={styles.heading}>
-        Conclusion
-      </Text>
-
-      <Text style={styles.paragraph}>
-        The proposed business project is financially viable,
-        operationally scalable and suitable for MSME and
-        institutional funding support.
-      </Text>
-
-      {/* Footer */}
-      <Text style={styles.footer}>
-        Generated by Business Partner AI • CEO & Founder
-        Akash Agnihotri
-      </Text>
-
+        <Text style={styles.text}>
+          Based on projected revenue, operational scalability, and market
+          demand, this project is financially viable and suitable for
+          bank loan approval under MSME / PMEGP / Mudra schemes.
+        </Text>
+      </View>
     </Page>
   </Document>
 );
 
-export const DPRPage = () => {
+export default function DPRPage() {
   const [businessName, setBusinessName] = useState('');
   const [ownerName, setOwnerName] = useState('');
-  const [projectCost, setProjectCost] = useState('');
+  const [location, setLocation] = useState('');
   const [loanAmount, setLoanAmount] = useState('');
-  const [details, setDetails] = useState('');
+  const [projectCost, setProjectCost] = useState('');
+  const [businessType, setBusinessType] = useState('');
 
   return (
-    <div className="p-6 text-white">
+    <div className="min-h-screen bg-black p-8 text-white">
+      <div className="mx-auto max-w-4xl rounded-2xl border border-cyan-500/20 bg-slate-950 p-8 shadow-2xl">
+        <h1 className="mb-2 text-4xl font-bold text-cyan-400">
+          Professional DPR Generator
+        </h1>
 
-      <h1 className="mb-8 text-4xl font-black">
-        Professional DPR Generator
-      </h1>
+        <p className="mb-8 text-slate-400">
+          Generate CA-level bank loan project reports instantly.
+        </p>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-
-        {/* Form */}
-        <div className="rounded-2xl border border-cyan-400/20 bg-slate-900 p-6">
-
+        <div className="grid gap-5 md:grid-cols-2">
           <input
-            type="text"
             placeholder="Business Name"
             value={businessName}
-            onChange={(e) =>
-              setBusinessName(e.target.value)
-            }
-            className="mb-4 w-full rounded-lg bg-slate-800 p-3"
+            onChange={(e) => setBusinessName(e.target.value)}
+            className="rounded-xl border border-cyan-500/20 bg-slate-900 p-4"
           />
 
           <input
-            type="text"
             placeholder="Owner Name"
             value={ownerName}
-            onChange={(e) =>
-              setOwnerName(e.target.value)
-            }
-            className="mb-4 w-full rounded-lg bg-slate-800 p-3"
+            onChange={(e) => setOwnerName(e.target.value)}
+            className="rounded-xl border border-cyan-500/20 bg-slate-900 p-4"
           />
 
           <input
-            type="text"
+            placeholder="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="rounded-xl border border-cyan-500/20 bg-slate-900 p-4"
+          />
+
+          <input
+            placeholder="Business Type"
+            value={businessType}
+            onChange={(e) => setBusinessType(e.target.value)}
+            className="rounded-xl border border-cyan-500/20 bg-slate-900 p-4"
+          />
+
+          <input
             placeholder="Project Cost"
             value={projectCost}
-            onChange={(e) =>
-              setProjectCost(e.target.value)
-            }
-            className="mb-4 w-full rounded-lg bg-slate-800 p-3"
+            onChange={(e) => setProjectCost(e.target.value)}
+            className="rounded-xl border border-cyan-500/20 bg-slate-900 p-4"
           />
 
           <input
-            type="text"
             placeholder="Loan Amount"
             value={loanAmount}
-            onChange={(e) =>
-              setLoanAmount(e.target.value)
-            }
-            className="mb-4 w-full rounded-lg bg-slate-800 p-3"
+            onChange={(e) => setLoanAmount(e.target.value)}
+            className="rounded-xl border border-cyan-500/20 bg-slate-900 p-4"
           />
+        </div>
 
-          <textarea
-            placeholder="Business Details"
-            value={details}
-            onChange={(e) =>
-              setDetails(e.target.value)
-            }
-            className="mb-4 h-40 w-full rounded-lg bg-slate-800 p-3"
-          />
-
+        <div className="mt-8">
           <PDFDownloadLink
             document={
               <DPRDocument
                 businessName={businessName}
                 ownerName={ownerName}
-                projectCost={projectCost}
+                location={location}
                 loanAmount={loanAmount}
-                details={details}
+                projectCost={projectCost}
+                businessType={businessType}
               />
             }
-            fileName="Professional-DPR.pdf"
+            fileName={`${businessName}-DPR.pdf`}
+            className="inline-flex rounded-xl bg-cyan-400 px-6 py-4 font-bold text-black"
           >
-            {({ loading }) => (
-              <button className="rounded-xl bg-cyan-400 px-6 py-3 font-bold text-black">
-                {loading
-                  ? 'Generating PDF...'
-                  : 'Download Professional DPR'}
-              </button>
-            )}
+            {({ loading }) =>
+              loading
+                ? 'Generating PDF...'
+                : 'Download Professional DPR'
+            }
           </PDFDownloadLink>
-        </div>
-
-        {/* Preview */}
-        <div className="rounded-2xl border border-cyan-400/20 bg-slate-900 p-6">
-          <h2 className="mb-4 text-2xl font-bold">
-            DPR Preview
-          </h2>
-
-          <div className="space-y-3 text-slate-300">
-            <p>
-              <strong>Business:</strong>{' '}
-              {businessName || 'Your Business'}
-            </p>
-
-            <p>
-              <strong>Owner:</strong>{' '}
-              {ownerName || 'Owner Name'}
-            </p>
-
-            <p>
-              <strong>Project Cost:</strong>{' '}
-              ₹ {projectCost || '0'}
-            </p>
-
-            <p>
-              <strong>Loan Amount:</strong>{' '}
-              ₹ {loanAmount || '0'}
-            </p>
-
-            <p>
-              <strong>Details:</strong>{' '}
-              {details || 'Business description'}
-            </p>
-          </div>
         </div>
       </div>
     </div>
   );
-};
+}
