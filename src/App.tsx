@@ -13,8 +13,6 @@ import { SignupPage } from './pages/auth/SignupPage';
 import { LandingPage } from './pages/landing/LandingPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
-/* Dashboard Pages */
-
 const DashboardHome = lazy(() =>
   import('./pages/dashboard/DashboardHome').then((module) => ({
     default: module.DashboardHome,
@@ -123,8 +121,6 @@ const AdminPage = lazy(() =>
   }))
 );
 
-/* IMPORTANT FIX */
-
 const DPRPage = lazy(() =>
   import('./pages/dashboard/DPRPage').then((module) => ({
     default: module.default,
@@ -142,30 +138,24 @@ export const App = () => {
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
 
-        {/* Landing */}
         <Route path="/" element={<LandingPage />} />
 
-        {/* Auth */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         </Route>
 
-        {/* Protected Dashboard */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardLayout />}>
 
-            {/* Dashboard Home */}
             <Route index element={<DashboardHome />} />
 
-            {/* AI */}
             <Route path="chat" element={<AIChatPage />} />
             <Route path="voice" element={<VoiceAssistantPage />} />
             <Route path="images" element={<ImageGeneratorPage />} />
             <Route path="analyzer" element={<AnalyzerPage />} />
 
-            {/* Business */}
             <Route path="finance" element={<FinancePage />} />
             <Route path="customers" element={<CustomersPage />} />
             <Route path="collections" element={<CollectionsPage />} />
@@ -173,29 +163,23 @@ export const App = () => {
             <Route path="reports" element={<ReportsPage />} />
             <Route path="recovery" element={<RecoveryPage />} />
 
-            {/* MSME */}
             <Route path="msme-reports" element={<MsmeReportsPage />} />
             <Route path="dpr" element={<DPRPage />} />
 
-            {/* Payments */}
             <Route path="payment" element={<PaymentPage />} />
             <Route path="subscription" element={<SubscriptionPage />} />
             <Route path="payment-success" element={<PaymentSuccessPage />} />
             <Route path="payment-failed" element={<PaymentFailedPage />} />
 
-            {/* Tools */}
             <Route path="scanner" element={<UploadScannerPage />} />
 
-            {/* Settings */}
             <Route path="settings" element={<SettingsPage />} />
 
-            {/* Admin */}
             <Route path="admin" element={<AdminPage />} />
 
           </Route>
         </Route>
 
-        {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />
 
       </Routes>
