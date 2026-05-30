@@ -13,6 +13,8 @@ import { SignupPage } from './pages/auth/SignupPage';
 import { LandingPage } from './pages/landing/LandingPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
+/* Dashboard Pages */
+
 const AdminPage = lazy(() =>
   import('./pages/dashboard/AdminPage').then((module) => ({
     default: module.AdminPage,
@@ -55,6 +57,12 @@ const DashboardHome = lazy(() =>
   }))
 );
 
+const DPRPage = lazy(() =>
+  import('./pages/dashboard/DPRPage').then((module) => ({
+    default: module.DPRPage,
+  }))
+);
+
 const FinancePage = lazy(() =>
   import('./pages/dashboard/FinancePage').then((module) => ({
     default: module.FinancePage,
@@ -76,6 +84,12 @@ const MsmeReportsPage = lazy(() =>
 const PaymentFailedPage = lazy(() =>
   import('./pages/dashboard/PaymentFailedPage').then((module) => ({
     default: module.PaymentFailedPage,
+  }))
+);
+
+const PaymentPage = lazy(() =>
+  import('./pages/dashboard/PaymentPage').then((module) => ({
+    default: module.PaymentPage,
   }))
 );
 
@@ -121,73 +135,70 @@ const VoiceAssistantPage = lazy(() =>
   }))
 );
 
-const DPRPage = lazy(() =>
-  import('./pages/dashboard/DPRPage').then((module) => ({
-    default: module.default,
-  }))
-);
+export const App = () => {
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      <Routes>
 
-const PaymentPage = lazy(() =>
-  import('./pages/dashboard/PaymentPage').then((module) => ({
-    default: module.default,
-  }))
-);
+        {/* Landing */}
+        <Route path="/" element={<LandingPage />} />
 
-export const App = () => (
-  <Suspense fallback={<LoadingScreen />}>
-    <Routes>
-      {/* Landing */}
-      <Route path="/" element={<LandingPage />} />
-
-      {/* Auth */}
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      </Route>
-
-      {/* Dashboard */}
-      <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<DashboardHome />} />
-
-          {/* AI */}
-          <Route path="chat" element={<AIChatPage />} />
-          <Route path="voice" element={<VoiceAssistantPage />} />
-          <Route path="images" element={<ImageGeneratorPage />} />
-          <Route path="analyzer" element={<AnalyzerPage />} />
-
-          {/* MSME */}
-          <Route path="msme-reports" element={<MsmeReportsPage />} />
-          <Route path="dpr" element={<DPRPage />} />
-
-          {/* Payments */}
-          <Route path="payments" element={<PaymentPage />} />
-          <Route path="subscription" element={<SubscriptionPage />} />
-          <Route path="payment-success" element={<PaymentSuccessPage />} />
-          <Route path="payment-failed" element={<PaymentFailedPage />} />
-
-          {/* Business */}
-          <Route path="analytics" element={<AnalyticsPage />} />
-          <Route path="reports" element={<ReportsPage />} />
-          <Route path="recovery" element={<RecoveryPage />} />
-          <Route path="finance" element={<FinancePage />} />
-          <Route path="customers" element={<CustomersPage />} />
-          <Route path="collections" element={<CollectionsPage />} />
-
-          {/* Tools */}
-          <Route path="scanner" element={<UploadScannerPage />} />
-
-          {/* Settings */}
-          <Route path="settings" element={<SettingsPage />} />
-
-          {/* Admin */}
-          <Route path="admin" element={<AdminPage />} />
+        {/* Auth */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         </Route>
-      </Route>
 
-      {/* 404 */}
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
-  </Suspense>
-);
+        {/* Protected Dashboard */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<DashboardLayout />}>
+
+            {/* Dashboard Home */}
+            <Route index element={<DashboardHome />} />
+
+            {/* AI */}
+            <Route path="chat" element={<AIChatPage />} />
+            <Route path="voice" element={<VoiceAssistantPage />} />
+            <Route path="images" element={<ImageGeneratorPage />} />
+            <Route path="analyzer" element={<AnalyzerPage />} />
+
+            {/* Reports */}
+            <Route path="msme-reports" element={<MsmeReportsPage />} />
+            <Route path="reports" element={<ReportsPage />} />
+            <Route path="dpr" element={<DPRPage />} />
+
+            {/* Finance */}
+            <Route path="finance" element={<FinancePage />} />
+            <Route path="payment" element={<PaymentPage />} />
+            <Route path="subscription" element={<SubscriptionPage />} />
+            <Route path="payment-success" element={<PaymentSuccessPage />} />
+            <Route path="payment-failed" element={<PaymentFailedPage />} />
+
+            {/* CRM */}
+            <Route path="customers" element={<CustomersPage />} />
+            <Route path="collections" element={<CollectionsPage />} />
+            <Route path="recovery" element={<RecoveryPage />} />
+
+            {/* Analytics */}
+            <Route path="analytics" element={<AnalyticsPage />} />
+
+            {/* Tools */}
+            <Route path="scanner" element={<UploadScannerPage />} />
+
+            {/* Settings */}
+            <Route path="settings" element={<SettingsPage />} />
+
+            {/* Admin */}
+            <Route path="admin" element={<AdminPage />} />
+
+          </Route>
+        </Route>
+
+        {/* 404 */}
+        <Route path="*" element={<NotFoundPage />} />
+
+      </Routes>
+    </Suspense>
+  );
+};
