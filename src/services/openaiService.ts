@@ -19,7 +19,7 @@ async function askOpenAI(prompt: string) {
             {
               role: "system",
               content:
-                "You are Business Partner AI. Help users in Hindi and English about business, startups, finance, loans, DPR, marketing and growth.",
+                "You are Business Partner AI. Help users professionally in Hindi and English for business, startups, finance, loans, DPR, marketing and growth.",
             },
 
             {
@@ -47,27 +47,35 @@ async function askOpenAI(prompt: string) {
    CHAT
 ========================= */
 
-export async function sendBusinessChatMessage(message: string) {
-  return await askOpenAI(message);
+export async function sendBusinessChatMessage(
+  message: string,
+  language?: string
+) {
+  return await askOpenAI(
+    `${language || "English"}:\n${message}`
+  );
 }
 
 /* =========================
    ANALYZER
 ========================= */
 
-export async function analyzeBusiness(data: string) {
+export async function analyzeBusiness(data: any) {
   return await askOpenAI(
-    `Analyze this business professionally:\n\n${data}`
+    `Analyze this business professionally:\n${JSON.stringify(data, null, 2)}`
   );
 }
 
 /* =========================
-   COLLECTION MESSAGE
+   COLLECTIONS
 ========================= */
 
-export async function generateCollectionMessage(name: string, amount: string) {
+export async function generateCollectionMessage(
+  customerName: string,
+  amount: number
+) {
   return await askOpenAI(
-    `Write a polite payment collection reminder for ${name} for pending amount ₹${amount}.`
+    `Write a professional payment reminder for ${customerName} for pending payment of ₹${amount}.`
   );
 }
 
@@ -75,10 +83,17 @@ export async function generateCollectionMessage(name: string, amount: string) {
    IMAGE GENERATOR
 ========================= */
 
-export async function generateBusinessImages(prompt: string) {
+export async function generateBusinessImages(
+  prompt: string,
+  type?: string
+) {
   return [
     {
-      url: `https://placehold.co/600x400?text=${encodeURIComponent(prompt)}`,
+      id: crypto.randomUUID(),
+      prompt,
+      type: type || "logo",
+      createdAt: new Date().toISOString(),
+      url: `https://placehold.co/600x400/png?text=${encodeURIComponent(prompt)}`,
     },
   ];
 }
@@ -87,9 +102,9 @@ export async function generateBusinessImages(prompt: string) {
    MSME REPORT
 ========================= */
 
-export async function generateMsmeReport(data: string) {
+export async function generateMsmeReport(data: any) {
   return await askOpenAI(
-    `Create a professional MSME business report:\n\n${data}`
+    `Create a professional MSME business report:\n${JSON.stringify(data, null, 2)}`
   );
 }
 
@@ -97,9 +112,9 @@ export async function generateMsmeReport(data: string) {
    RECOVERY PLAN
 ========================= */
 
-export async function generateRecoveryPlan(data: string) {
+export async function generateRecoveryPlan(data: any) {
   return await askOpenAI(
-    `Create a business recovery plan:\n\n${data}`
+    `Create a professional business recovery plan:\n${JSON.stringify(data, null, 2)}`
   );
 }
 
@@ -107,8 +122,15 @@ export async function generateRecoveryPlan(data: string) {
    REPORT GENERATOR
 ========================= */
 
-export async function generateReport(data: string) {
+export async function generateReport(
+  title: string,
+  data?: any
+) {
   return await askOpenAI(
-    `Generate a professional business report:\n\n${data}`
+    `Generate a professional report for:\nTitle: ${title}\n\n${JSON.stringify(
+      data,
+      null,
+      2
+    )}`
   );
 }
