@@ -1,0 +1,1 @@
+const e=(t,a)=>t.filter(s=>s.type===a).reduce((s,c)=>s+c.amount,0),l=(t,a,s,c)=>{const o=t>0?(t-a)/t:0,n=t>0?s/t:0,i=t/c<75e3?8:0,r=58+o*55-n*35-i;return Math.max(5,Math.min(98,Math.round(r)))},m=t=>t.filter(a=>a.paymentStatus!=="paid").reduce((a,s)=>a+s.amountDue,0);export{l as c,m as p,e as s};
