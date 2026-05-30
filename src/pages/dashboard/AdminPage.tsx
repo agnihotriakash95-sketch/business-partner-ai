@@ -4,7 +4,7 @@ import { StatCard } from '../../components/ui/StatCard';
 import { useAuth } from '../../contexts/AuthContext';
 
 const users = [
-  { name: 'Akash Agnihotri', title: 'CEO & Founder', email: 'akash@businesspartner.ai', plan: 'Pro', status: 'Active' },
+  { name: 'Akash Agnihotri', title: 'CEO & Founder', email: 'agnihotriakash95@gmail.com', plan: 'Pro', status: 'Active' },
   { name: 'Meera Retail', email: 'meera@example.com', plan: 'Free', status: 'Trial' },
   { name: 'Enterprise Ops', email: 'ops@example.com', plan: 'Enterprise', status: 'Active' },
 ];

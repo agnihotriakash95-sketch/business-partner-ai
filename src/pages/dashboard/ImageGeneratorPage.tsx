@@ -49,7 +49,12 @@ export const ImageGeneratorPage = () => {
         </Button>
       </Card>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {images.length ? images.map((image) => (
+        {loading ? [0, 1, 2, 3].map((item) => (
+          <Card key={item} className="grid aspect-square place-items-center border-cyan-300/20 bg-slate-950/80 text-white">
+            <div className="h-16 w-16 animate-ping rounded-full border border-cyan-300/60" />
+            <p className="text-sm text-cyan-200">Generating real creative...</p>
+          </Card>
+        )) : images.length ? images.map((image) => (
           <Card key={image.id} className="border-cyan-300/20 bg-slate-950/80 text-white">
             <img src={image.url} alt={image.prompt} className="aspect-square w-full rounded-lg object-cover" />
             <p className="mt-3 text-sm font-semibold">{image.type}</p>

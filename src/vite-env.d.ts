@@ -9,6 +9,7 @@ interface ImportMetaEnv {
   readonly VITE_FIREBASE_APP_ID?: string;
   readonly VITE_FIREBASE_MEASUREMENT_ID?: string;
   readonly VITE_USE_DEMO_AI?: string;
+  readonly VITE_RAZORPAY_KEY_ID?: string;
 }
 
 interface ImportMeta {

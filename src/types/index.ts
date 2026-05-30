@@ -28,6 +28,17 @@ export interface UploadedAsset {
   createdAt: string;
 }
 
+export interface PaymentRecord {
+  id: string;
+  ownerId: string;
+  plan: SubscriptionPlan;
+  amount: number;
+  status: 'success' | 'failed' | 'demo';
+  provider: 'razorpay';
+  providerPaymentId?: string;
+  createdAt: string;
+}
+
 export interface MsmeReportInput {
   businessType: string;
   investmentAmount: number;

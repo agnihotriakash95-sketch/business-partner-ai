@@ -77,12 +77,27 @@ export const sendBusinessChatMessage = async (message: string, history: { role: 
 export const generateBusinessImages = async (prompt: string, type: string): Promise<GeneratedImage[]> => {
   if (useDemoAI || !functions) {
     await wait(1000);
-    const encoded = encodeURIComponent(`${type}: ${prompt}`);
     return [0, 1, 2, 3].map((index) => ({
       id: crypto.randomUUID(),
       prompt,
       type,
-      url: `https://dummyimage.com/1024x1024/020617/67e8f9.png&text=${encoded}+${index + 1}`,
+      url: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+          <defs>
+            <radialGradient id="g" cx="50%" cy="20%" r="70%">
+              <stop offset="0%" stop-color="#22d3ee" stop-opacity=".9"/>
+              <stop offset="45%" stop-color="#0f172a"/>
+              <stop offset="100%" stop-color="#020617"/>
+            </radialGradient>
+          </defs>
+          <rect width="1024" height="1024" fill="url(#g)"/>
+          <rect x="86" y="86" width="852" height="852" rx="52" fill="none" stroke="#67e8f9" stroke-width="6" opacity=".45"/>
+          <text x="512" y="420" text-anchor="middle" font-family="Arial" font-size="70" font-weight="800" fill="#ffffff">Business Partner AI</text>
+          <text x="512" y="510" text-anchor="middle" font-family="Arial" font-size="44" fill="#a5f3fc">${type}</text>
+          <text x="512" y="604" text-anchor="middle" font-family="Arial" font-size="28" fill="#cbd5e1">Demo preview. Configure Firebase Functions + OpenAI for real images.</text>
+          <circle cx="${260 + index * 120}" cy="735" r="58" fill="#22d3ee" opacity=".22"/>
+        </svg>
+      `)}`,
       createdAt: new Date().toISOString(),
     }));
   }

@@ -2,7 +2,9 @@ import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Mic, Send, Sparkles, Volume2 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
+import { useAuth } from '../../contexts/AuthContext';
 import { useSpeech } from '../../hooks/useSpeech';
+import { saveChatMessage } from '../../services/firestoreService';
 import { sendBusinessChatMessage } from '../../services/openaiService';
 import type { ChatMessage } from '../../types';
 
@@ -16,6 +18,7 @@ const starterMessages: ChatMessage[] = [
 ];
 
 export const AIChatPage = () => {
+  const { profile } = useAuth();
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     const saved = localStorage.getItem('business-partner-chat');
     return saved ? (JSON.parse(saved) as ChatMessage[]) : starterMessages;
@@ -36,12 +39,15 @@ export const AIChatPage = () => {
     if (!input.trim()) return;
     const userMessage: ChatMessage = { id: crypto.randomUUID(), role: 'user', content: input, createdAt: new Date().toISOString() };
     setMessages((current) => [...current, userMessage]);
+    void saveChatMessage(profile.id, userMessage);
     setInput('');
     setLoading(true);
     setError('');
     try {
       const reply = await sendBusinessChatMessage(userMessage.content, messages.map(({ role, content }) => ({ role, content })));
-      setMessages((current) => [...current, { id: crypto.randomUUID(), role: 'assistant', content: reply, createdAt: new Date().toISOString() }]);
+      const assistantMessage: ChatMessage = { id: crypto.randomUUID(), role: 'assistant', content: reply, createdAt: new Date().toISOString() };
+      setMessages((current) => [...current, assistantMessage]);
+      void saveChatMessage(profile.id, assistantMessage);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'AI chat failed');
     } finally {

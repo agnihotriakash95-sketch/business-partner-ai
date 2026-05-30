@@ -146,8 +146,8 @@ export const LandingPage = () => (
             <p className="mt-3 text-neutral-600 dark:text-neutral-300">Start with demo data, then connect Firebase and OpenAI when you deploy.</p>
           </Card>
           <Card className="grid gap-3">
-            <span className="flex items-center gap-2 text-sm"><Mail className="h-4 w-4 text-gold-400" /> hello@businesspartner.ai</span>
-            <span className="flex items-center gap-2 text-sm"><Phone className="h-4 w-4 text-gold-400" /> +91 90000 00000</span>
+            <span className="flex items-center gap-2 text-sm"><Mail className="h-4 w-4 text-gold-400" /> agnihotriakash95@gmail.com</span>
+            <span className="flex items-center gap-2 text-sm"><Phone className="h-4 w-4 text-gold-400" /> +91 7651876597</span>
             <span className="flex items-center gap-2 text-sm"><Users className="h-4 w-4 text-gold-400" /> For founders and teams</span>
           </Card>
         </div>

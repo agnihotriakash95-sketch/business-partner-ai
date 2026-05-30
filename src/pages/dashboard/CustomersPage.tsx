@@ -20,7 +20,7 @@ export const CustomersPage = () => {
       name,
       company: name,
       email: `${name.toLowerCase().replace(/\s/g, '.')}@example.com`,
-      phone: '+91 90000 00000',
+      phone: '+91 7651876597',
       amountDue,
       paymentStatus: amountDue > 0 ? 'pending' : 'paid',
       dueDate: new Date().toISOString(),

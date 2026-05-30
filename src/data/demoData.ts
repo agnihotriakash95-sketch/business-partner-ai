@@ -4,7 +4,7 @@ export const demoUser: UserProfile = {
   id: 'demo-user',
   name: 'Akash Agnihotri',
   title: 'CEO & Founder',
-  email: 'akash@businesspartner.ai',
+  email: 'agnihotriakash95@gmail.com',
   role: 'admin',
   plan: 'pro',
   createdAt: '2026-05-01T10:00:00.000Z',

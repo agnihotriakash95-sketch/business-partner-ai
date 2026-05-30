@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import Razorpay from 'razorpay';
 import { initializeApp } from 'firebase-admin/app';
 import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params';
@@ -6,6 +7,8 @@ import { defineSecret } from 'firebase-functions/params';
 initializeApp();
 
 const openaiApiKey = defineSecret('OPENAI_API_KEY');
+const razorpayKeyId = defineSecret('RAZORPAY_KEY_ID');
+const razorpayKeySecret = defineSecret('RAZORPAY_KEY_SECRET');
 const model = 'gpt-4.1-mini';
 const advancedModel = 'gpt-5.2';
 
@@ -41,6 +44,37 @@ const parseJson = <T>(text: string): T => {
 };
 
 const client = () => new OpenAI({ apiKey: openaiApiKey.value() });
+
+export const createRazorpayOrder = onCall({ secrets: [razorpayKeyId, razorpayKeySecret], timeoutSeconds: 30 }, async (request) => {
+  requireAuth(request.auth?.uid);
+  const { plan, amount } = request.data as { plan: string; amount: number };
+  if (!['pro', 'enterprise'].includes(plan) || amount <= 0) {
+    throw new HttpsError('invalid-argument', 'Valid paid plan and amount are required.');
+  }
+
+  const razorpay = new Razorpay({
+    key_id: razorpayKeyId.value(),
+    key_secret: razorpayKeySecret.value(),
+  });
+
+  const order = await razorpay.orders.create({
+    amount: amount * 100,
+    currency: 'INR',
+    receipt: `${plan}-${request.auth?.uid}-${Date.now()}`.slice(0, 40),
+    notes: {
+      plan,
+      userId: request.auth?.uid || '',
+      app: 'Business Partner AI',
+    },
+  });
+
+  return {
+    keyId: razorpayKeyId.value(),
+    orderId: order.id,
+    amount: order.amount,
+    currency: order.currency,
+  };
+});
 
 export const analyzeBusiness = onCall({ secrets: [openaiApiKey], timeoutSeconds: 60 }, async (request) => {
   requireAuth(request.auth?.uid);
@@ -173,24 +207,29 @@ export const generateBusinessImages = onCall({ secrets: [openaiApiKey], timeoutS
     throw new HttpsError('invalid-argument', 'Image prompt is required.');
   }
 
-  const response = await client().responses.create({
-    model: advancedModel,
-    input: `Create ${type || 'business creative'} for Business Partner AI. Prompt: ${prompt}`,
-    tools: [{ type: 'image_generation' }],
+  const response = await client().images.generate({
+    model: 'gpt-image-1',
+    prompt: `Create a premium production-quality ${type || 'business creative'} for Business Partner AI. Blue-black futuristic SaaS aesthetic, polished startup branding, no fake contact details. User prompt: ${prompt}`,
+    size: '1024x1024',
+    n: 2,
   });
 
-  const images = response.output
-    .filter((output) => output.type === 'image_generation_call')
-    .map((output) => {
-      const result = (output as unknown as { result?: string }).result;
-      return result;
+  const images = (response.data || [])
+    .map((image, index) => {
+      const base64 = image.b64_json;
+      const url = image.url;
+      return {
+        base64,
+        url,
+        index,
+      };
     })
-    .filter((result): result is string => Boolean(result))
-    .map((base64, index) => ({
-      id: `${Date.now()}-${index}`,
+    .filter((image) => Boolean(image.base64 || image.url))
+    .map((image) => ({
+      id: `${Date.now()}-${image.index}`,
       prompt,
       type,
-      url: `data:image/png;base64,${base64}`,
+      url: image.base64 ? `data:image/png;base64,${image.base64}` : String(image.url),
       createdAt: new Date().toISOString(),
     }));
 

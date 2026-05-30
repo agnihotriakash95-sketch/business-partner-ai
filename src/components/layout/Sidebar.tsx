@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   Landmark,
   MessageSquareText,
+  Mic,
   ShieldCheck,
   Settings,
   Users,
@@ -19,6 +20,7 @@ import { useAuth } from '../../contexts/AuthContext';
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/dashboard/chat', label: 'AI Chat', icon: MessageSquareText },
+  { to: '/dashboard/voice', label: 'AI Voice', icon: Mic },
   { to: '/dashboard/images', label: 'AI Image Generator', icon: FileImage },
   { to: '/dashboard/msme-reports', label: 'MSME Reports', icon: Landmark },
   { to: '/dashboard/finance', label: 'Finance', icon: WalletCards },

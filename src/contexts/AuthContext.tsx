@@ -2,6 +2,7 @@ import type { User } from 'firebase/auth';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { demoUser } from '../data/demoData';
 import { canUseFirebaseAuth, initializeAuthSession, loginWithEmail, loginWithGoogle, logout, resetPassword, signupWithEmail, subscribeToAuth } from '../services/authService';
+import { saveUserProfile } from '../services/firestoreService';
 import type { UserProfile } from '../types';
 import { getAuthErrorMessage } from '../utils/authErrors';
 
@@ -64,6 +65,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         : demoUser,
     [firebaseUser],
   );
+
+  useEffect(() => {
+    if (firebaseUser) void saveUserProfile(profile);
+  }, [firebaseUser, profile]);
 
   const value = useMemo<AuthContextValue>(
     () => ({

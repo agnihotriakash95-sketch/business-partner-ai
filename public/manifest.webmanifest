@@ -1,7 +1,7 @@
 {
   "name": "Business Partner AI",
   "short_name": "Partner AI",
-  "description": "AI business advisor for growth, finance, recovery, and collections.",
+  "description": "AI business advisor by Akash Agnihotri for growth, finance, recovery, and collections.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#080808",
