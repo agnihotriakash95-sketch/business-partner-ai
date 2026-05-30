@@ -150,11 +150,11 @@ export const App = () => {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         </Route>
 
-        {/* Protected Dashboard */}
+        {/* Dashboard */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardLayout />}>
 
-            {/* Dashboard Home */}
+            {/* Home */}
             <Route index element={<DashboardHome />} />
 
             {/* AI */}
@@ -163,9 +163,8 @@ export const App = () => {
             <Route path="images" element={<ImageGeneratorPage />} />
             <Route path="analyzer" element={<AnalyzerPage />} />
 
-            {/* Reports */}
+            {/* MSME */}
             <Route path="msme-reports" element={<MsmeReportsPage />} />
-            <Route path="reports" element={<ReportsPage />} />
             <Route path="dpr" element={<DPRPage />} />
 
             {/* Finance */}
