@@ -123,13 +123,13 @@ const AdminPage = lazy(() =>
 
 const DPRPage = lazy(() =>
   import('./pages/dashboard/DPRPage').then((module) => ({
-    default: module.default,
+    default: module.DPRPage,
   }))
 );
 
 const PaymentPage = lazy(() =>
   import('./pages/dashboard/PaymentPage').then((module) => ({
-    default: module.default,
+    default: module.PaymentPage,
   }))
 );
 

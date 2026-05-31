@@ -8,6 +8,7 @@ import {
   FileText,
   LayoutDashboard,
   Landmark,
+  LifeBuoy,
   MessageSquareText,
   Mic,
   CreditCard,
@@ -91,6 +92,18 @@ const navItems = [
     to: '/dashboard/analytics',
     label: 'Analytics',
     icon: BarChart3,
+  },
+
+  {
+    to: '/dashboard/reports',
+    label: 'Reports',
+    icon: FileText,
+  },
+
+  {
+    to: '/dashboard/recovery',
+    label: 'Recovery',
+    icon: LifeBuoy,
   },
 
   {

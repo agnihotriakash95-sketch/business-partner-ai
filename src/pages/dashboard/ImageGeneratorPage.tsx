@@ -67,7 +67,7 @@ export const ImageGeneratorPage = () => {
             <div>
               <ImageIcon className="mx-auto h-12 w-12 text-cyan-300" />
               <h2 className="mt-4 font-display text-2xl font-black">Image previews appear here</h2>
-              <p className="mt-2 text-sm text-slate-400">Demo mode returns generated preview cards; production uses OpenAI image generation.</p>
+              <p className="mt-2 text-sm text-slate-400">Demo mode returns styled previews; set VITE_USE_DEMO_AI=false with Firebase or OpenAI for real images.</p>
             </div>
           </Card>
         )}
