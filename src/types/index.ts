@@ -33,7 +33,7 @@ export interface PaymentRecord {
   ownerId: string;
   plan: SubscriptionPlan;
   amount: number;
-  status: 'success' | 'failed' | 'demo';
+  status: 'success' | 'failed' | 'pending';
   provider: 'razorpay';
   providerPaymentId?: string;
   createdAt: string;
@@ -156,4 +156,38 @@ export interface CollectionMessage {
   whatsapp: string;
   emailSubject: string;
   emailBody: string;
+}
+
+export interface BusinessMetricsSnapshot {
+  businessName: string;
+  revenue: number;
+  expenses: number;
+  profit: number;
+  margin: number;
+  pendingDues: number;
+  customerCount: number;
+  overdueCount: number;
+  retentionRate: number;
+  revenueChangePercent: number;
+  expenseChangePercent: number;
+  healthScore: number;
+  monthlyTrend: { month: string; revenue: number; expense: number; profit: number }[];
+  topCategories: { name: string; amount: number }[];
+  cashflowStatus: 'healthy' | 'watch' | 'critical';
+}
+
+export interface GrowthAdvisorResponse {
+  growthStrategies: string[];
+  marketingPlans: string[];
+  salesImprovements: string[];
+  hiringRecommendations: string[];
+  costReduction: string[];
+  scalingOpportunities: string[];
+  fundingReadiness: string[];
+  investorPrep: string[];
+}
+
+export interface AIInsight {
+  title: string;
+  insight: string;
 }

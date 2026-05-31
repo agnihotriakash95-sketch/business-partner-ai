@@ -13,7 +13,7 @@ const features = [
 ];
 
 const pricing = [
-  { name: 'Free', price: 'INR 0', items: ['Demo dashboard', 'Basic reports', '10 AI prompts/month'] },
+  { name: 'Free', price: 'INR 0', items: ['Dashboard access', 'Basic reports', '10 AI prompts/month'] },
   { name: 'Pro', price: 'INR 1,999', featured: true, items: ['Unlimited analyzer', 'Finance manager', 'Collections AI', 'Priority insights'] },
   { name: 'Enterprise', price: 'Custom', items: ['Admin controls', 'Team onboarding', 'Custom workflows', 'Dedicated support'] },
 ];
@@ -58,9 +58,9 @@ export const LandingPage = () => (
                   Launch Dashboard <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
-              <Link to="/dashboard">
+              <Link to="/signup">
                 <Button variant="secondary" className="w-full sm:w-auto">
-                  View Demo
+                  Get Started
                 </Button>
               </Link>
             </div>
@@ -127,7 +127,7 @@ export const LandingPage = () => (
       <section className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2" id="testimonials">
         <div>
           <h2 className="font-display text-3xl font-black">Founder-loved insights</h2>
-          <p className="mt-3 text-neutral-600 dark:text-neutral-300">Demo testimonials showing the intended product experience.</p>
+          <p className="mt-3 text-neutral-600 dark:text-neutral-300">Trusted by founders building data-driven businesses across India.</p>
         </div>
         <div className="grid gap-4">
           {['It made our cash flow problems visible in one week.', 'The collection messages saved hours for our accounts team.'].map((quote, index) => (
@@ -143,7 +143,7 @@ export const LandingPage = () => (
         <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 md:grid-cols-3">
           <Card className="md:col-span-2">
             <h2 className="font-display text-3xl font-black">Ready to grow with sharper decisions?</h2>
-            <p className="mt-3 text-neutral-600 dark:text-neutral-300">Start with demo data, then connect Firebase and OpenAI when you deploy.</p>
+            <p className="mt-3 text-neutral-600 dark:text-neutral-300">Enterprise AI analytics, voice insights, and growth advisory for Indian businesses.</p>
           </Card>
           <Card className="grid gap-3">
             <span className="flex items-center gap-2 text-sm"><Mail className="h-4 w-4 text-gold-400" /> agnihotriakash95@gmail.com</span>

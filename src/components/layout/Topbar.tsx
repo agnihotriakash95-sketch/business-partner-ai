@@ -4,7 +4,7 @@ import { useNotifications } from '../../contexts/NotificationContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
 
 export const Topbar = ({ onMenu }: { onMenu: () => void }) => {
-  const { profile, signOutUser, isDemo } = useAuth();
+  const { profile, signOutUser } = useAuth();
   const { unreadCount, markAllRead } = useNotifications();
 
   return (
@@ -34,7 +34,7 @@ export const Topbar = ({ onMenu }: { onMenu: () => void }) => {
         </button>
         <div className="hidden text-right sm:block">
           <p className="text-sm font-semibold text-white">{profile.name}</p>
-          <p className="text-xs text-cyan-600 dark:text-cyan-300">{profile.title} · {isDemo ? 'Demo workspace' : profile.plan.toUpperCase()}</p>
+          <p className="text-xs text-cyan-600 dark:text-cyan-300">{profile.title} · {profile.plan.toUpperCase()}</p>
         </div>
         <button
           type="button"

@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 
+type SpeechLanguage = 'English' | 'Hindi';
+
 type SpeechRecognitionConstructor = new () => SpeechRecognition;
 
 interface SpeechRecognition extends EventTarget {
@@ -24,23 +26,37 @@ declare global {
   }
 }
 
+const voiceForLanguage = (language: SpeechLanguage) => (language === 'Hindi' ? 'hi-IN' : 'en-IN');
+
 export const useSpeech = () => {
   const [listening, setListening] = useState(false);
-  const supported = useMemo(() => 'speechSynthesis' in window || 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window, []);
+  const supported = useMemo(
+    () => 'speechSynthesis' in window || 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window,
+    []
+  );
 
-  const speak = useCallback((text: string) => {
-    if (!('speechSynthesis' in window)) return;
+  const speak = useCallback((text: string, language: SpeechLanguage = 'English') => {
+    if (!('speechSynthesis' in window) || !text.trim()) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = /[\u0900-\u097F]/.test(text) ? 'hi-IN' : 'en-IN';
+    utterance.lang = /[\u0900-\u097F]/.test(text) ? 'hi-IN' : voiceForLanguage(language);
+    utterance.rate = 0.95;
+    utterance.pitch = 1;
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(
+      (v) => v.lang.startsWith(utterance.lang) && /google|samantha|daniel|neural|premium/i.test(v.name)
+    );
+    if (preferred) utterance.voice = preferred;
     window.speechSynthesis.speak(utterance);
   }, []);
 
-  const listen = useCallback((onText: (text: string) => void) => {
-    const Recognition = (window.SpeechRecognition || window.webkitSpeechRecognition) as SpeechRecognitionConstructor | undefined;
+  const listen = useCallback((onText: (text: string) => void, language: SpeechLanguage = 'English') => {
+    const Recognition = (window.SpeechRecognition || window.webkitSpeechRecognition) as
+      | SpeechRecognitionConstructor
+      | undefined;
     if (!Recognition) return;
     const recognition = new Recognition();
-    recognition.lang = 'en-IN';
+    recognition.lang = voiceForLanguage(language);
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.onresult = (event) => onText(event.results[0][0].transcript);

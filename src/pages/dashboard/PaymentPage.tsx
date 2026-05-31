@@ -61,9 +61,9 @@ export const PaymentPage = () => {
         return;
       }
       setStatus(
-        record.status === 'demo'
-          ? 'Demo payment recorded. Add Razorpay key for live checkout.'
-          : 'Payment successful. Subscription updated.'
+        record.status === 'success'
+          ? 'Payment successful. Subscription updated.'
+          : 'Payment recorded.'
       );
     } catch (caught) {
       setStatus(caught instanceof Error ? caught.message : 'Payment failed.');
@@ -132,7 +132,7 @@ export const PaymentPage = () => {
         <Card className="flex items-center gap-3 border-cyan-300/20 bg-slate-950/80 text-slate-300">
           <Sparkles className="h-5 w-5 text-cyan-300" />
           <p className="text-sm">
-            Secure Razorpay checkout. Demo mode works without keys; production uses Firebase Functions for order creation.
+            Secure Razorpay checkout powered by Firebase Functions for order creation.
           </p>
         </Card>
       )}

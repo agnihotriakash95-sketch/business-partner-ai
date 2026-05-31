@@ -9,7 +9,7 @@ import { checkoutSubscription } from '../../services/paymentService';
 import type { PaymentRecord, SubscriptionPlan } from '../../types';
 
 const plans = [
-  { id: 'free' as SubscriptionPlan, name: 'Free', amount: 0, price: 'INR 0', features: ['Dashboard demo', 'Basic reports', 'Limited AI'] },
+  { id: 'free' as SubscriptionPlan, name: 'Free', amount: 0, price: 'INR 0', features: ['Dashboard access', 'Basic reports', 'Limited AI'] },
   { id: 'pro' as SubscriptionPlan, name: 'Pro', amount: 1999, price: 'INR 1,999/mo', features: ['Unlimited reports', 'Collections AI', 'Finance analytics', 'Priority insights'] },
   { id: 'enterprise' as SubscriptionPlan, name: 'Enterprise', amount: 9999, price: 'INR 9,999/mo', features: ['Admin panel', 'Team seats', 'Custom workflows', 'SLA support'] },
 ];
@@ -23,7 +23,7 @@ export const SubscriptionPage = () => {
 
   const checkout = async (plan: SubscriptionPlan, amount: number) => {
     if (amount === 0) {
-      setStatus('Free plan is already available in demo mode.');
+      setStatus('Free plan is active.');
       return;
     }
     setLoadingPlan(plan);
@@ -32,7 +32,7 @@ export const SubscriptionPage = () => {
       const record = await checkoutSubscription(plan, amount, profile);
       setBillingHistory((current) => [record, ...current]);
       await savePaymentRecord(record);
-      setStatus(record.status === 'demo' ? 'Demo payment recorded. Add Razorpay key for live checkout.' : 'Payment successful. Subscription updated.');
+      setStatus(record.status === 'success' ? 'Payment successful. Subscription updated.' : 'Payment recorded.');
       if (record.status === 'success') navigate('/dashboard/payment-success');
     } catch (caught) {
       const failed: PaymentRecord = {
@@ -89,10 +89,10 @@ export const SubscriptionPage = () => {
             <div key={record.id} className="grid gap-2 rounded-lg bg-white/10 p-3 text-sm sm:grid-cols-4">
               <span>{record.plan.toUpperCase()}</span>
               <span>INR {record.amount.toLocaleString('en-IN')}</span>
-              <span className={record.status === 'success' || record.status === 'demo' ? 'text-emerald-300' : 'text-red-300'}>{record.status}</span>
+              <span className={record.status === 'success' ? 'text-emerald-300' : 'text-red-300'}>{record.status}</span>
               <span className="text-slate-400">{new Date(record.createdAt).toLocaleString('en-IN')}</span>
             </div>
-          )) : <p className="text-sm text-slate-400">No payments yet. Your successful, failed, and demo transactions will appear here.</p>}
+          )) : <p className="text-sm text-slate-400">No payments yet. Your transaction history will appear here.</p>}
         </div>
       </Card>
     </div>

@@ -13,7 +13,7 @@ export const upsertDocument = async <T extends object>(collectionName: string, i
 };
 
 export const getOwnedDocuments = async <T>(collectionName: string, ownerId: string, sortField = 'createdAt') => {
-  if (!db) throw new Error('Firestore is not configured.');
+  if (!db) return [];
   const snapshot = await getDocs(query(collection(db, collectionName), where('ownerId', '==', ownerId), orderBy(sortField, 'desc')));
   return snapshot.docs.map((item) => ({ id: item.id, ...item.data() }) as T);
 };

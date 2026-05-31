@@ -1,24 +1,30 @@
 import { FormEvent, useState } from 'react';
 import { Bot, FileText } from 'lucide-react';
+import { OpenAIKeyWarning } from '../../components/ai/OpenAIKeyWarning';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Input, Textarea } from '../../components/ui/Input';
-import { analyzeBusiness } from '../../services/openaiService';
+import { useAuth } from '../../contexts/AuthContext';
+import { useBusinessData } from '../../contexts/BusinessDataContext';
+import { analyzeBusiness, isOpenAIConfigured } from '../../services/openaiService';
 import type { BusinessAnalysis, BusinessAnalysisInput } from '../../types';
+import { buildBusinessMetrics } from '../../utils/analyticsEngine';
 import { validateBusinessInput } from '../../utils/validators';
 
-const initialInput: BusinessAnalysisInput = {
-  businessName: 'Nova Retail',
-  industry: 'Retail and FMCG',
-  monthlyRevenue: 860000,
-  monthlyExpenses: 469000,
-  employeeCount: 14,
-  location: 'Mumbai, India',
-  problemsFacing: 'Pending payments, rising marketing cost, slow repeat purchases.',
+const emptyInput: BusinessAnalysisInput = {
+  businessName: '',
+  industry: '',
+  monthlyRevenue: 0,
+  monthlyExpenses: 0,
+  employeeCount: 0,
+  location: '',
+  problemsFacing: '',
 };
 
 export const AnalyzerPage = () => {
-  const [input, setInput] = useState(initialInput);
+  const { profile } = useAuth();
+  const { transactions, customers } = useBusinessData();
+  const [input, setInput] = useState(emptyInput);
   const [analysis, setAnalysis] = useState<BusinessAnalysis | null>(null);
   const [errors, setErrors] = useState<Partial<Record<keyof BusinessAnalysisInput, string>>>({});
   const [loading, setLoading] = useState(false);
@@ -41,7 +47,13 @@ export const AnalyzerPage = () => {
     setLoading(true);
     setError('');
     try {
-      setAnalysis(await analyzeBusiness(input));
+      setAnalysis(
+        await analyzeBusiness(input, {
+          userName: profile.name,
+          businessType: input.industry,
+          metrics: buildBusinessMetrics(transactions, customers, profile.name),
+        })
+      );
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'AI analyzer failed');
     } finally {
@@ -51,6 +63,7 @@ export const AnalyzerPage = () => {
 
   return (
     <div className="grid gap-6">
+      <OpenAIKeyWarning />
       <div>
         <h1 className="font-display text-3xl font-black">AI Business Analyzer</h1>
         <p className="mt-2 text-slate-400">
@@ -110,7 +123,7 @@ export const AnalyzerPage = () => {
               onChange={(event) => update('problemsFacing', event.target.value)}
             />
             {error ? <p className="rounded-lg bg-red-500/10 p-3 text-sm text-red-300">{error}</p> : null}
-            <Button loading={loading}>
+            <Button loading={loading} disabled={!isOpenAIConfigured()}>
               <Bot className="h-4 w-4" /> Generate AI Report
             </Button>
           </form>
@@ -154,7 +167,7 @@ export const AnalyzerPage = () => {
                 <Bot className="mx-auto h-12 w-12 text-cyan-300" />
                 <h2 className="mt-4 font-display text-2xl font-black">AI report will appear here</h2>
                 <p className="mt-2 text-sm text-slate-400">
-                  Demo mode returns realistic analysis. Set VITE_USE_DEMO_AI=false with Firebase or OpenAI for live AI.
+                  Enter your business details and generate a comprehensive AI analysis report.
                 </p>
               </div>
             </Card>

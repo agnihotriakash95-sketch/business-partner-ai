@@ -3,22 +3,23 @@ import { Download, Landmark, Sparkles } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Input, Textarea } from '../../components/ui/Input';
+import { OpenAIKeyWarning } from '../../components/ai/OpenAIKeyWarning';
 import { exportMsmeReportPdf } from '../../services/pdfService';
-import { generateMsmeReport } from '../../services/openaiService';
+import { generateMsmeReport, isOpenAIConfigured } from '../../services/openaiService';
 import type { MsmeReport, MsmeReportInput } from '../../types';
 
-const initialInput: MsmeReportInput = {
-  businessType: 'Food processing unit',
-  investmentAmount: 1800000,
-  loanAmount: 1200000,
-  location: 'Indore, Madhya Pradesh',
-  machinery: 'Pulverizer, packing machine, sealing machine, weighing scale',
-  monthlyRevenue: 420000,
-  expenses: 270000,
+const emptyInput: MsmeReportInput = {
+  businessType: '',
+  investmentAmount: 0,
+  loanAmount: 0,
+  location: '',
+  machinery: '',
+  monthlyRevenue: 0,
+  expenses: 0,
 };
 
 export const MsmeReportsPage = () => {
-  const [input, setInput] = useState(initialInput);
+  const [input, setInput] = useState(emptyInput);
   const [report, setReport] = useState<MsmeReport | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -58,6 +59,7 @@ export const MsmeReportsPage = () => {
 
   return (
     <div className="grid gap-6">
+      <OpenAIKeyWarning />
       <div>
         <h1 className="font-display text-3xl font-black">MSME Project Report Generator</h1>
         <p className="mt-2 text-slate-400">
@@ -111,7 +113,7 @@ export const MsmeReportsPage = () => {
               />
             </div>
             {error ? <p className="rounded-lg bg-red-500/10 p-3 text-sm text-red-300">{error}</p> : null}
-            <Button loading={loading}>
+            <Button loading={loading} disabled={!isOpenAIConfigured()}>
               <Sparkles className="h-4 w-4" /> Generate Bank Report
             </Button>
           </form>

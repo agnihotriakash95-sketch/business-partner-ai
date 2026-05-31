@@ -59,17 +59,7 @@ export const checkoutSubscription = async (plan: SubscriptionPlan, amount: numbe
   }
 
   if (!checkoutKey) {
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    return {
-      id: crypto.randomUUID(),
-      ownerId: profile.id,
-      plan,
-      amount,
-      status: 'demo',
-      provider: 'razorpay',
-      providerPaymentId: 'demo-payment',
-      createdAt: new Date().toISOString(),
-    };
+    throw new Error('Razorpay is not configured. Add VITE_RAZORPAY_KEY_ID and deploy Firebase Functions.');
   }
 
   const loaded = await loadRazorpay();
